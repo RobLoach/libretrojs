@@ -1,0 +1,9 @@
+[submodule "vendor/libretro-common"]
+	path = vendor/libretro-common
+	url = https://github.com/libretro/libretro-common.git
+[submodule "vendor/gamebatte-libretro"]
+	path = vendor/gamebatte-libretro
+	url = https://github.com/libretro/gambatte-libretro.git
+[submodule "vendor/gambatte-libretro"]
+	path = vendor/gambatte-libretro
+	url = https://github.com/libretro/gambatte-libretro.git
