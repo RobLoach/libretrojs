@@ -1,0 +1,17 @@
+{
+  "name": "libretrojs",
+  "version": "1.0.0",
+  "description": "JavaScript bindings for the libretro API.",
+  "main": "gambatte.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "light-server -s web"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "light-server": "^2.6.4"
+  }
+}
