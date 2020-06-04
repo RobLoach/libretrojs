@@ -1,12 +1,9 @@
 
-gambatte.js: libretro.bc vendor/gambatte-libretro/gambatte_libretro_emscripten.bc
-	emcc vendor/gambatte-libretro/gambatte_libretro_emscripten.bc libretro.bc -o gambatte.js
+gambatte.js: vendor/gambatte-libretro/gambatte_libretro_emscripten.bc
+	emcc vendor/gambatte-libretro/gambatte_libretro_emscripten.bc -s LINKABLE=1 -s EXPORT_ALL=1 -o gambatte.js
 
 vendor/gambatte-libretro/gambatte_libretro_emscripten.bc:
-	platform=emscripten make -C vendor/gambatte-libretro
-
-libretro.bc:
-	em++ libretro.cpp -O2 -o libretro.bc
+	platform=emscripten emmake make -C vendor/gambatte-libretro
 
 clean:
 	rm vendor/gambatte-libretro/gambatte_libretro_emscripten.bc
