@@ -6,3 +6,7 @@
 	path = vendor/gambatte-libretro
 	url = https://github.com/libretro/gambatte-libretro.git
 	ignore=dirty
+[submodule "vendor/nestopia"]
+	path = vendor/nestopia
+	url = https://github.com/libretro/nestopia.git
+	ignore=dirty

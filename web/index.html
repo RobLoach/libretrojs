@@ -2,11 +2,23 @@
 <html>
   <head>
     <title>Getting Started</title>
-      <script src="./libretro.js"></script>
-        <script src="./core-gambatte.js"></script>
   </head>
   <body>
 
-    Loaded!
+
+        <!-- Create the canvas that the C++ code will draw into -->
+        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+
+
+        <!-- Allow the C++ to access the canvas element -->
+        <script type='text/javascript'>
+            var Module = {
+                canvas: (function() { return document.getElementById('canvas'); })()
+            };
+        </script>
+
+
+
+      <script src="./libretro.js"></script>
   </body>
 </html>
