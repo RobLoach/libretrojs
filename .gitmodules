@@ -2,11 +2,7 @@
 	path = vendor/libretro-common
 	url = https://github.com/libretro/libretro-common.git
 	ignore=dirty
-[submodule "vendor/gambatte-libretro"]
-	path = vendor/gambatte-libretro
-	url = https://github.com/libretro/gambatte-libretro.git
-	ignore=dirty
-[submodule "vendor/nestopia"]
-	path = vendor/nestopia
-	url = https://github.com/libretro/nestopia.git
-	ignore=dirty
+[submodule "vendor/libretro-samples"]
+	path = vendor/libretro-samples
+	url = https://github.com/libretro/libretro-samples.git
+    ignore=dirty

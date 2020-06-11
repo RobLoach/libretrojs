@@ -2,4 +2,5 @@
 *.wasm
 *.o
 core-*.js
-node_modules
+/node_modules
+/web
