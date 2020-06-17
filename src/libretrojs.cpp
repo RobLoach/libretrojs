@@ -5,7 +5,6 @@
 #include <emscripten/html5.h>
 #include "../vendor/libretro-common/include/libretro.h"
 
-
 class Context {
 public:
     Context() {
@@ -19,6 +18,7 @@ public:
     retro_pixel_format pixelFormat;
     bool supportsNoGame;
 
+
     uint32_t* screen;
     uint32_t texture[320*320];
 
@@ -29,8 +29,6 @@ public:
         return 1;
     }
 };
-
-bool init_video(Context* context);
 
 Context* context;
 
@@ -197,57 +195,14 @@ void core_video_render_canvas(uint32_t* ptr, int w, int h) {
     }, ptr, w, h);
 }
 
-void core_video_convert_rgb565_to_rgbx8888(const void *input_, const void *output_, unsigned width, unsigned height) {
-
-    /*
-       int h;
-       const uint16_t *input = (const uint16_t*)input_;
-       uint16_t *output = (uint16_t*)output_;
-
-       for (h = 0; h < height;
-             h++, output += out_stride >> 1, input += in_stride >> 1)
-       {
-          int w = 0;
-
-          for (; w < width; w++)
-          {
-             uint16_t col = input[w];
-             uint16_t hi  = (col >> 1) & 0x7fe0;
-             uint16_t lo  = col & 0x1f;
-             output[w]    = hi | lo;
-          }
-       }
-
-
-
-
-
-
-
-
-
-    uint32_t* colors = (uint32_t*)data;
-    uint32_t* screen = output;
-
-    for (int i = 0; i < width * height; i++) {
-        uint32_t color = colors[i];
-        uint8_t r = ((((color >> 11) & 0x1F) * 527) + 23) >> 6;
-        uint8_t g = ((((color >> 5) & 0x3F) * 259) + 33) >> 6;
-        uint8_t b = (((color & 0x1F) * 527) + 23) >> 6;
-        screen[]
-    }
-    */
-}
-
-void core_video_convert_xrgb8888_to_rgbx8888(const void *input, const void *output, unsigned width, unsigned height) {
-    char* pixels = (char*)input;
+void core_video_convert_xrgb8888_to_rgbx8888(const void *data, unsigned width, unsigned height) {
+    char* pixels = (char*)data;
     for (int i = 0; i < width * height * 4; i += 4) {
         pixels[i] = pixels[i+1];
         pixels[i+1] = pixels[i+2];
         pixels[i+2] = pixels[i+3];
         pixels[i+3] = 0xff;
     }
-    output = input;
 }
 
 void core_video_refresh(const void *data, unsigned width, unsigned height, size_t pitch) {
@@ -256,17 +211,15 @@ void core_video_refresh(const void *data, unsigned width, unsigned height, size_
         return;
     }
 
-    if ((context->width != width) || (context->height != height)) {
-        context->width = width;
-        context->height = height;
-        context->pitch = pitch;
-        init_video(context);
-    }
+    context->screen = (uint32_t*)data;
+    context->width = width;
+    context->height = height;
+    context->pitch = pitch;
 
     // Convert the pixels based on the pixel format.
     switch ((int)context->pixelFormat) {
         case RETRO_PIXEL_FORMAT_XRGB8888:
-            core_video_convert_xrgb8888_to_rgbx8888(data, context->screen, width, height);
+            core_video_convert_xrgb8888_to_rgbx8888(data, width, height);
             break;
     }
 
@@ -318,29 +271,11 @@ void core_run(void* userArgs) {
 bool init_video(Context* context) {
     int width = context->width;
     int height = context->height;
-    emscripten_set_canvas_element_size(context->target.c_str(), width, height);
+    std::cout << "Target: " << context->target.c_str() << std::endl;
+  emscripten_set_canvas_element_size(context->target.c_str(), width, height);
 
-    // Set up the screen buffer.
-    if (context->screen) {
-        free(context->screen);
-        context->screen = NULL;
-    }
-
-    switch ((int)context->pixelFormat) {
-        case RETRO_PIXEL_FORMAT_0RGB1555:
-            // TODO: Create an 8888 screen buffer.
-            context->screen = (uint32_t *)malloc(sizeof(uint32_t) * width * height);
-            break;
-        case RETRO_PIXEL_FORMAT_XRGB8888:
-            // Don't need to create a buffer.
-            break;
-        case RETRO_PIXEL_FORMAT_RGB565:
-            // Create 8888 screen buffer.
-            context->screen = (uint32_t *)malloc(sizeof(uint32_t) * width * height);
-            break;
-    }
-
-    return true;
+  // TODO: Set up any other video
+  return true;
 }
 
 int main() {
